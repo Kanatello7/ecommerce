@@ -1,4 +1,5 @@
 from passlib.context import CryptContext
+from datetime import datetime, timezone
 
 pwd_context = CryptContext(schemes=['argon2'], deprecated='auto') 
 
@@ -7,3 +8,6 @@ def hash_password(password: str) -> str:
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
     return pwd_context.verify(plain_password, hashed_password)
+
+def get_utc_now():
+    return datetime.now(timezone.utc)
