@@ -11,7 +11,7 @@ class User(Base):
     last_name: Mapped[str] = MappedColumn(String(130), nullable=False)
     email: Mapped[str] = MappedColumn(String(130), nullable=False, unique=True) 
 
-    last_login: Mapped[datetime] = MappedColumn(DateTime(timezone=True), default=None)
+    last_login: Mapped[datetime] = MappedColumn(DateTime(timezone=True), default=None, nullable=True)
     password: Mapped[str] = MappedColumn(String, nullable=False) 
 
     def __str__(self):

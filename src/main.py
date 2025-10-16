@@ -1,11 +1,17 @@
 from fastapi import FastAPI
 import uvicorn
 
+from src.auth.router import router as auth_router
+from src.auth.dependencies import login_required
+
 app = FastAPI()
+app.include_router(auth_router, prefix="/auth", tags=["auth"])
+
 
 @app.get("/")
-def home():
-    return "Hello World"
+@login_required
+async def home(current_user):
+    return f"Hello {current_user.first_name}"
 
 
 if __name__ == '__main__':
