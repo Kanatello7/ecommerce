@@ -52,7 +52,8 @@ async def refresh_token(request: Request, response: Response, service: AuthServi
 @router.post("/register", status_code=status.HTTP_201_CREATED)
 async def register(service: AuthServiceDep, new_user: UserRegister):
     await service.register_new_user(new_user=new_user)
-    
+    return {"message": "Successfully registered"}
+
 @router.post("/logout")
 async def logout(response: Response, service: AuthServiceDep):
     response.delete_cookie('access_token')
