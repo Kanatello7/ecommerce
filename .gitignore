@@ -7,3 +7,6 @@
 # python caches
 .pytest_cache
 __pycache__
+
+# pytest 
+.coverage

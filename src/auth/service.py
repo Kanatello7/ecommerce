@@ -72,7 +72,8 @@ class AuthService:
         data = new_user.model_dump(exclude=["password_confirm"])
         data["password"] = hash_password(data["password"])
         user = await self.user_service.create_new_user(data)
-    
+        return user 
+
     async def decode_token(self, token: str):
         try:
             payload = jwt.decode(token, settings_jwt.SECRET_KEY, algorithms=[settings_jwt.ALGORITHM])

@@ -1,12 +1,10 @@
-from fastapi import APIRouter, HTTPException, status, Depends, Request, Response
+from fastapi import APIRouter, status, Depends, Request, Response
 from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
 
 from src.auth.schemas import *
 from src.auth.exceptions import InvalidCredentialsException
-from src.auth.dependencies import AuthServiceDep
+from src.auth.dependencies import AuthServiceDep, login_required
 from src.auth.config import settings_jwt
-
-from typing import Annotated
 
 router = APIRouter()
 # oauth2_scheme = OAuth2PasswordBearer(tokenUrl='/auth/login')
@@ -49,11 +47,11 @@ async def refresh_token(request: Request, response: Response, service: AuthServi
     )
     return token 
 
-@router.post("/register", status_code=status.HTTP_201_CREATED)
+@router.post("/register", status_code=status.HTTP_201_CREATED, response_model=UserOut)
 async def register(service: AuthServiceDep, new_user: UserRegister):
-    await service.register_new_user(new_user=new_user)
-    return {"message": "Successfully registered"}
-
+    user = await service.register_new_user(new_user=new_user)
+    return user
+ 
 @router.post("/logout")
 async def logout(response: Response, service: AuthServiceDep):
     response.delete_cookie('access_token')
