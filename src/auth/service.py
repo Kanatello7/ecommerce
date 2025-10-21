@@ -18,11 +18,6 @@ class UserService:
     async def create_new_user(self, data: dict) -> User:
         return await self.repository.create(data)
     
-
-    # async def get_current_user(self, token: TokenDep):
-    #     user = await self.get_user_by_username(user_username)
-    #     return user
-    
 class AuthService:
     def __init__(self, repository: AuthRepository, user_service: UserService):
         self.repository = repository

@@ -28,7 +28,8 @@ test = [
     "pytest-cov (>=7.0.0,<8.0.0)",
     "aiosqlite (>=0.21.0,<0.22.0)",
     "httpx (>=0.28.1,<0.29.0)",
-    "pytest-asyncio (>=1.2.0,<2.0.0)"
+    "pytest-asyncio (>=1.2.0,<2.0.0)",
+    "pytest-mock (>=3.15.1,<4.0.0)"
 ]
 lint = [
 
@@ -43,6 +44,11 @@ dev = [
 pythonpath = ["src"]
 testpaths = ["tests"]
 asyncio_mode = "auto"
+
+markers = [
+"integration: integration tests",
+"unit: unit tests"
+]
 
  
 [build-system]

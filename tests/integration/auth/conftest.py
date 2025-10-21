@@ -6,7 +6,6 @@ from src.main import app
 import pytest 
 from httpx import AsyncClient, ASGITransport
 
-transport = ASGITransport(app=app)
 
 @pytest.fixture(scope='function')
 def override_dependencies(get_session):
@@ -20,6 +19,7 @@ def override_dependencies(get_session):
 
 @pytest.fixture
 async def async_client(override_dependencies):
+    transport = ASGITransport(app=app)
     async with AsyncClient(transport=transport, base_url="http://test") as client:
         yield client 
 

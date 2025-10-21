@@ -83,7 +83,7 @@ async def test_login_success(async_client):
     login_response = await async_client.post(url="/auth/login",
                                              headers={"accept": "application/json",
                                               "Content-Type": "application/x-www-form-urlencoded"},
-                                             data="grant_type=password&username=Kanat123%40gmail.com&password=test123!&scope=&client_id=string&client_secret=********")
+                                             content="grant_type=password&username=Kanat123%40gmail.com&password=test123!&scope=&client_id=string&client_secret=********")
     
     # Check cookies are set
     access_token = login_response.cookies.get('access_token')
@@ -124,7 +124,7 @@ async def test_refresh_token_success(async_client):
     login_response = await async_client.post(
         url="/auth/login",
         headers={"accept": "application/json", "Content-Type": "application/x-www-form-urlencoded"},
-        data="grant_type=password&username=refresh_test%40gmail.com&password=test123!&scope=&client_id=string&client_secret=********"
+        content="grant_type=password&username=refresh_test%40gmail.com&password=test123!&scope=&client_id=string&client_secret=********"
     )
     
     old_access_token = login_response.cookies.get('access_token')
@@ -188,6 +188,7 @@ async def test_refresh_token_expired(async_client):
         algorithm=settings_jwt.ALGORITHM
     )
 
+    
     response = await async_client.post(
         url="/auth/refresh",
         cookies={"refresh_token": expired_token}
@@ -232,7 +233,7 @@ async def test_login_invalid_credentials(async_client, email, password):
     response = await async_client.post(url="/auth/login",
             headers={"accept": "application/json",
                      "Content-Type": "application/x-www-form-urlencoded"},
-                     data=f"grant_type=password&username={email}&password={password}&scope=&client_id=string&client_secret=********")
+                     content=f"grant_type=password&username={email}&password={password}&scope=&client_id=string&client_secret=********")
     assert response.status_code == 401
 
 @pytest.mark.integration
@@ -275,7 +276,7 @@ async def test_logout_clears_cookies_properly(async_client):
     login_response = await async_client.post(
         url="/auth/login",
         headers={"accept": "application/json", "Content-Type": "application/x-www-form-urlencoded"},
-        data="grant_type=password&username=logout_test%40gmail.com&password=test123!&scope=&client_id=string&client_secret=********"
+        content="grant_type=password&username=logout_test%40gmail.com&password=test123!&scope=&client_id=string&client_secret=********"
     )
     
     # Verify we got cookies
