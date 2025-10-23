@@ -22,5 +22,6 @@ class UserRepository:
         stmt = insert(self.model).values(**data).returning(self.model)
         result = await self.session.execute(stmt)
         await self.session.commit()
-        return result.scalar_one()
-    
+        user = result.scalar_one()
+        await self.session.refresh(user)
+        return user

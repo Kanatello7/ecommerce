@@ -10,6 +10,8 @@ class UserOut(BaseModel):
     last_name: str 
     email: str
 
+    model_config = {"from_attributes": True}
+    
 class UserRegister(UserOut):
     password: str
     password_confirm: str 
