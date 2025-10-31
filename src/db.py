@@ -1,7 +1,10 @@
 from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, async_sessionmaker, create_async_engine
-from sqlalchemy.orm import DeclarativeBase
+from sqlalchemy.orm import DeclarativeBase, mapped_column
+from sqlalchemy import DateTime, text 
+
 from src.config import settings_db
-from typing import AsyncGenerator
+from typing import AsyncGenerator, Annotated
+from datetime import datetime, timezone
 
 async_engine = create_async_engine(
     url=settings_db.DATABASE_URL,
@@ -15,6 +18,12 @@ async def get_session() -> AsyncGenerator[AsyncSession, None]:
             yield session
         finally:
             await session.close() 
+
+CreatedAt = Annotated[datetime, mapped_column(DateTime(timezone=True), server_default=text("TIMEZONE('utc', now())"), 
+                                              nullable=False)]
+UpdatedAt = Annotated[datetime, mapped_column(DateTime(timezone=True), server_default=text("TIMEZONE('utc', now())"), 
+                                              nullable=False, 
+                                              onupdate=datetime.now(tz=timezone.utc))]
 
 class Base(DeclarativeBase):
     pass 

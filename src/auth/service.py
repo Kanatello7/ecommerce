@@ -5,7 +5,7 @@ from src.auth.models import User
 from src.auth.repository import AuthRepository, UserRepository
 from src.auth.exceptions import *
 
-from datetime import timedelta
+from datetime import timedelta, datetime, timezone
 import jwt 
 
 class UserService:
@@ -13,11 +13,14 @@ class UserService:
         self.repository = repository
     
     async def get_user_by_username(self, username: str) -> User:
-        return await self.repository.find_one_or_more(email=username)
+        return await self.repository.find_one(email=username)
 
     async def create_new_user(self, data: dict) -> User:
         return await self.repository.create(data)
     
+    async def set_login_time(self, user: User):
+        await self.repository.set_login_time(user)
+
 class AuthService:
     def __init__(self, repository: AuthRepository, user_service: UserService):
         self.repository = repository
@@ -53,7 +56,8 @@ class AuthService:
     async def create_token_pair(self, user: User):
         access_token = await self.create_access_token(user)
         refresh_token = await self.create_refresh_token(user)
-
+        await self.user_service.set_login_time(user)
+        
         return Token(access_token=access_token, refresh_token=refresh_token, token_type='bearer')
     
     async def register_new_user(self, new_user: UserRegister) -> User:

@@ -2,11 +2,12 @@ from fastapi import FastAPI
 import uvicorn
 
 from src.auth.router import router as auth_router
+from src.products.router import router as product_router
 from src.auth.dependencies import login_required
 
 app = FastAPI()
 app.include_router(auth_router, prefix="/auth", tags=["auth"])
-
+app.include_router(product_router, prefix="/products", tags=["product"])
 
 @app.get("/")
 @login_required

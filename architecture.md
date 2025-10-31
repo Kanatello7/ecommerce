@@ -34,8 +34,14 @@
 #### Models
 - Users 
 - Products
-- Shopping cart
+- Cart
 - Payments
+- Order 
+- OrderItems
+- CartItems
+
+
+
 
 #### API 
 - Addding get, post, put, delete for models

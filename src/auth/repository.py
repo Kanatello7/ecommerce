@@ -1,27 +1,17 @@
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, insert
 
 from src.auth.models import User
+from src.cart.models import Cart
+from src.utils import SqlAlchemyCRUDRepository
+from datetime import datetime, timezone
 
 class AuthRepository:
     def __init__(self, session: AsyncSession):
         self.session = session 
 
-class UserRepository:
+class UserRepository(SqlAlchemyCRUDRepository):
     model = User
 
-    def __init__(self, session: AsyncSession):
-        self.session = session
-    
-    async def find_one_or_more(self, *filter, **filter_by):
-        query = select(self.model).filter(*filter).filter_by(**filter_by)
-        result = await self.session.execute(query)
-        return result.scalars().one_or_none()
-    
-    async def create(self, data: dict):
-        stmt = insert(self.model).values(**data).returning(self.model)
-        result = await self.session.execute(stmt)
+    async def set_login_time(self, user: User):
+        user.last_login = datetime.now(tz=timezone.utc)
         await self.session.commit()
-        user = result.scalar_one()
-        await self.session.refresh(user)
-        return user
