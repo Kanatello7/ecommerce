@@ -1,6 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, async_sessionmaker, create_async_engine
 from sqlalchemy.orm import DeclarativeBase, mapped_column
-from sqlalchemy import DateTime, text 
+from sqlalchemy import DateTime, text, func
 
 from src.config import settings_db
 from typing import AsyncGenerator, Annotated
@@ -19,9 +19,9 @@ async def get_session() -> AsyncGenerator[AsyncSession, None]:
         finally:
             await session.close() 
 
-CreatedAt = Annotated[datetime, mapped_column(DateTime(timezone=True), server_default=text("TIMEZONE('utc', now())"), 
+CreatedAt = Annotated[datetime, mapped_column(DateTime(timezone=True), server_default=func.now(), 
                                               nullable=False)]
-UpdatedAt = Annotated[datetime, mapped_column(DateTime(timezone=True), server_default=text("TIMEZONE('utc', now())"), 
+UpdatedAt = Annotated[datetime, mapped_column(DateTime(timezone=True), server_default=func.now(), 
                                               nullable=False, 
                                               onupdate=datetime.now(tz=timezone.utc))]
 

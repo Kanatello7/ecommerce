@@ -100,10 +100,11 @@ async def test_create_refresh_token(mocker: MockerFixture, sample_user, fixed_ut
 
 @pytest.mark.unit 
 async def test_create_token_pair(mocker: MockerFixture, sample_user, fixed_utc_time):
-    mock_user_service = mocker.Mock()
-    mock_auth_repo = mocker.Mock()
+    mock_user_service = mocker.AsyncMock()
+    mock_auth_repo = mocker.AsyncMock()
     auth_service = AuthService(repository=mock_auth_repo, user_service=mock_user_service)
-    
+
+    mock_user_service.set_login_time.return_value=fixed_utc_time
     mocker.patch.object(
         auth_service,
         "create_access_token",
@@ -121,6 +122,7 @@ async def test_create_token_pair(mocker: MockerFixture, sample_user, fixed_utc_t
 
     auth_service.create_access_token.assert_called_once_with(sample_user)
     auth_service.create_refresh_token.assert_called_once_with(sample_user)
+    mock_user_service.set_login_time.assert_called_once_with(sample_user)
     assert token.access_token == "mocked_access_token"
     assert token.refresh_token == "mocked_refresh_token"
     assert token.token_type == 'bearer'

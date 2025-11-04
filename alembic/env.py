@@ -9,7 +9,7 @@ from src.config import settings_db
 from src.auth.models import *
 from src.cart.models import *
 from src.products.models import *
-from src.db import Base
+from src.db import Base, CreatedAt, UpdatedAt
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
