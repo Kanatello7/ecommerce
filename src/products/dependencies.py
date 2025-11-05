@@ -15,7 +15,7 @@ async def get_category_service(repository: Annotated[CategoryRepository, Depends
     return CategoryService(repository=repository)
 
 async def get_product_service(repository: Annotated[ProductRepository, Depends(get_product_repository)]):
-    return CategoryService(repository=repository)
+    return ProductService(repository=repository)
 
 CategoryServiceDep = Annotated[CategoryService, Depends(get_category_service)]
 ProductServiceDep = Annotated[ProductService, Depends(get_product_service)]

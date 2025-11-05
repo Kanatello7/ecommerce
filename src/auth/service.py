@@ -13,7 +13,11 @@ class UserService:
         self.repository = repository
     
     async def get_user_by_username(self, username: str) -> User:
-        return await self.repository.find_one(email=username)
+        users = await self.repository.find_one_or_many(email=username)
+        if users:
+            return users[0]
+        else:
+            return None
 
     async def create_new_user(self, data: dict) -> User:
         return await self.repository.create(data)

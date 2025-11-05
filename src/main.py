@@ -2,12 +2,14 @@ from fastapi import FastAPI
 import uvicorn
 
 from src.auth.router import router as auth_router
-from src.products.router import router as product_router
+from src.products.api.products import router as product_router
+from src.products.api.categories import router as category_router
 from src.auth.dependencies import login_required
 
 app = FastAPI()
 app.include_router(auth_router, prefix="/auth", tags=["auth"])
-app.include_router(product_router, prefix="/products", tags=["product"])
+app.include_router(product_router, prefix="/products", tags=["products"])
+app.include_router(category_router, prefix="/categories", tags=["categories"])
 
 @app.get("/")
 @login_required

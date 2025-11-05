@@ -48,11 +48,9 @@ class Product(Base):
 @event.listens_for(Category, "before_insert")
 @event.listens_for(Category, "before_update")
 def generate_category_slug(mapper, connection, target):
-    if not target.slug:
-        target.slug = slugify(target.name)
+    target.slug = slugify(target.name)
 
 @event.listens_for(Product, "before_insert")
 @event.listens_for(Product, "before_update")
 def generate_category_slug(mapper, connection, target):
-    if not target.slug:
-        target.slug = slugify(target.name)
+    target.slug = slugify(target.name)
