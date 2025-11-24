@@ -9,6 +9,8 @@ from src.config import settings_db
 from src.auth.models import *
 from src.cart.models import *
 from src.products.models import *
+from src.orders.models import *
+from src.payments.models import *
 from src.db import Base, CreatedAt, UpdatedAt
 
 # this is the Alembic Config object, which provides
