@@ -50,6 +50,9 @@ markers = [
 "unit: unit tests"
 ]
 
+[tool.ruff]
+lint.ignore = ["F821", "F403", "F405"]
+
  
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
